@@ -957,6 +957,17 @@ export async function createCatalogService(
   async function ensureIndex(sourceId: string): Promise<void> {
     if (persistence.getIndexState()?.version !== 1 || persistence.listIndex(sourceId).length === 0) {
       await rebuildIndex(sourceId)
+      return
+    }
+    // Self-heal an index left partial by an interrupted rebuild (for example a
+    // process restart mid-rebuild): the record count must match the indexable
+    // assets plus the non-retired semantics of this source.
+    const expected = persistence.listAssetHeads(sourceId)
+      .filter(head => currentRevision(head.assetId) !== undefined).length
+      + persistence.listSemanticEntries(sourceId)
+        .filter(entry => currentSemantic(entry).definition.status !== 'retired').length
+    if (persistence.listIndex(sourceId).length !== expected) {
+      await rebuildIndex(sourceId)
     }
   }
 

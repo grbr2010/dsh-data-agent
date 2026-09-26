@@ -793,5 +793,15 @@ describe('Catalog shared service', () => {
     await service.review.retire('profile-fixture', candidate.semanticId, verified.version, 'Replaced')
     expect(indexDeletes).toEqual([`semantic:${candidate.semanticId}`])
     expect(persistence.listIndex('profile-fixture').find(record => record.id === `semantic:${candidate.semanticId}`)).toBeUndefined()
+
+    // An index left partial by an interrupted rebuild self-heals on the next search.
+    await base.deleteIndex(`asset:${ordersAssetId}`)
+    indexWrites.length = 0
+    const healed = await service.read.search({
+      query: 'orders', filters: { sourceId: 'profile-fixture' }, pageSize: 10,
+    })
+    expect(healed.items.map(item => item.id)).toContain(ordersAssetId)
+    expect(indexWrites.length).toBeGreaterThan(1)
+    expect(persistence.listIndex('profile-fixture').find(record => record.id === `asset:${ordersAssetId}`)).toBeDefined()
   })
 })
