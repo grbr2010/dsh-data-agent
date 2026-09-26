@@ -1,6 +1,6 @@
 # DSH Data Agent · Data Analysis & Business Insights via Conversation
 
-[中文](README.md) | **English**
+[中文](README.zh.md) | **English** | [Русский](README.md)
 
 <p align="center">
   <img src="assets/banner.webp" alt="DSH Data Agent Banner" width="100%">
