@@ -256,6 +256,7 @@ export interface CatalogPersistence {
     putSemanticRevision(revision: CatalogSemanticRevision): Promise<void>;
     listIndex(sourceId?: string): CatalogIndexRecord[];
     putIndex(record: CatalogIndexRecord): Promise<void>;
+    deleteIndex(id: string): Promise<void>;
     clearIndex(sourceId?: string): Promise<void>;
     getIndexState(): CatalogIndexState | undefined;
     putIndexState(state: CatalogIndexState): Promise<void>;

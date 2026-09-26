@@ -727,4 +727,71 @@ describe('Catalog shared service', () => {
     expect(run.error).toContain('[REDACTED]')
     expect(run.error).not.toContain(secret)
   })
+
+  it('maintains the search index incrementally: a rescan re-indexes only changed assets', async () => {
+    let runId = 0
+    let ordersComment = 'Order facts'
+    const adapter: CatalogAdapter = {
+      type: 'sqlite', capabilities: {},
+      async scan(context) {
+        return {
+          observations: [
+            tableObservation(context, 'orders', ordersComment),
+            tableObservation(context, 'customers', 'Customer master'),
+          ],
+          relations: [], coverageComplete: true, unavailableScopes: [],
+        }
+      },
+    }
+    const base = createMemoryCatalogPersistence()
+    const indexWrites: string[] = []
+    const indexDeletes: string[] = []
+    const persistence: typeof base = {
+      ...base,
+      async putIndex(record) { indexWrites.push(record.id); return base.putIndex(record) },
+      async deleteIndex(id) { indexDeletes.push(id); return base.deleteIndex(id) },
+    }
+    const service = await createCatalogService(connectionFixture(), persistence, {
+      maxAssetsPerRun: 100, maxTextChars: 4_096, pageSize: 20, maxPageSize: 100,
+      schemaConcurrency: 1, assetConcurrency: 1,
+      adapters: { sqlite: adapter }, randomId: () => String(++runId),
+    })
+    await service.scanner.start({ sessionId: 's', scope: { kind: 'source' } })
+    expect((await waitForTerminal(service, 'profile-fixture')).status).toBe('succeeded')
+    const ordersAssetId = persistence.listAssetHeads('profile-fixture')
+      .map(head => service.read.getAsset('profile-fixture', head.assetId).asset)
+      .find(revision => revision.payload.name === 'orders')!.assetId
+    indexWrites.length = 0
+
+    ordersComment = 'Order facts v2'
+    await service.scanner.start({ sessionId: 's', scope: { kind: 'source' } })
+    expect((await waitForTerminal(service, 'profile-fixture')).status).toBe('succeeded')
+
+    // Only the changed orders table was re-indexed; untouched assets keep their records.
+    expect(indexWrites).toEqual([`asset:${ordersAssetId}`])
+    const customers = await service.read.search({
+      query: 'Customer master', filters: { sourceId: 'profile-fixture' }, pageSize: 10,
+    })
+    expect(customers.items.map(item => item.name)).toContain('customers')
+    const ordersRecord = persistence.listIndex('profile-fixture')
+      .find(record => record.id === `asset:${ordersAssetId}`)
+    expect(ordersRecord?.searchItem.summary).toBe('Order facts v2')
+
+    // Semantic index updates are incremental too: saveCandidate upserts one record, retire drops it.
+    indexWrites.length = 0
+    const candidate = await service.review.saveCandidate('profile-fixture', {
+      kind: 'metric', name: 'Orders KPI', aliases: [], description: 'Orders metric', owner: 'qa',
+      sourceAssetIds: [ordersAssetId], status: 'inferred', formula: 'COUNT(*)', grain: 'day',
+      filters: [], exclusions: [], revisionNote: 'candidate',
+    })
+    expect(indexWrites).toEqual([`semantic:${candidate.semanticId}`])
+    const verified = await service.review.verify('profile-fixture', candidate.semanticId, candidate.version, {
+      kind: 'metric', name: 'Orders KPI', aliases: [], description: 'Orders metric', owner: 'qa',
+      sourceAssetIds: [ordersAssetId], status: 'verified', formula: 'COUNT(*)', grain: 'day',
+      filters: [], exclusions: [], revisionNote: 'QA approved',
+    })
+    await service.review.retire('profile-fixture', candidate.semanticId, verified.version, 'Replaced')
+    expect(indexDeletes).toEqual([`semantic:${candidate.semanticId}`])
+    expect(persistence.listIndex('profile-fixture').find(record => record.id === `semantic:${candidate.semanticId}`)).toBeUndefined()
+  })
 })

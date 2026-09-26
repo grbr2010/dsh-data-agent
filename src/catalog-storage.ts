@@ -88,6 +88,7 @@ export interface CatalogPersistence {
   putSemanticRevision(revision: CatalogSemanticRevision): Promise<void>
   listIndex(sourceId?: string): CatalogIndexRecord[]
   putIndex(record: CatalogIndexRecord): Promise<void>
+  deleteIndex(id: string): Promise<void>
   clearIndex(sourceId?: string): Promise<void>
   getIndexState(): CatalogIndexState | undefined
   putIndexState(state: CatalogIndexState): Promise<void>
@@ -149,6 +150,7 @@ export function createDomainCatalogPersistence(domain: CatalogStorageDomain): Ca
     listIndex: sourceId => sortedValues(searchIndex.entries(), value => value.id)
       .filter(value => sourceId === undefined || value.sourceId === sourceId),
     putIndex: record => searchIndex.put(record.id, catalogIndexRecordSchema.parse(record)),
+    deleteIndex: async id => { await searchIndex.delete(id) },
     async clearIndex(sourceId) {
       const keys = [...searchIndex.entries()]
         .filter(([, value]) => sourceId === undefined || value.sourceId === sourceId)
@@ -203,6 +205,7 @@ export function createMemoryCatalogPersistence(): CatalogPersistence {
     async putSemanticRevision(value) { semanticRevisions.set(value.id, catalogSemanticRevisionSchema.parse(value)) },
     listIndex: sourceId => [...index.values()].filter(value => sourceId === undefined || value.sourceId === sourceId),
     async putIndex(value) { index.set(value.id, catalogIndexRecordSchema.parse(value)) },
+    async deleteIndex(id) { index.delete(id) },
     async clearIndex(sourceId) {
       for (const [key, value] of index) if (sourceId === undefined || value.sourceId === sourceId) index.delete(key)
     },
