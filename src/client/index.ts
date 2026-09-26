@@ -5,7 +5,7 @@
  * Connection state lives in the server-side connection store, so layout and
  * session switches never lose it — the view only mirrors what
  * `/plugins/data-agent/status` reports.
- * @module @yejiming/dsh-data-agent/client
+ * @module @grbr2010/dsh-data-agent/client
  */
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type { ComponentType } from 'react'

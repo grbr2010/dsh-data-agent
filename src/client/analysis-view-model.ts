@@ -12,7 +12,7 @@
  * - report: settled with a valid AnalysisReportV1 meta;
  * - fallback: missing, malformed, string-encoded or unknown-version meta —
  *   degrade to the safe model content text, never guess or re-query.
- * @module @yejiming/dsh-data-agent/client/analysis-view-model
+ * @module @grbr2010/dsh-data-agent/client/analysis-view-model
  */
 
 import type { ToolCallBlock } from '@deepseek-ai/dsh-client-ui-conversation/client'

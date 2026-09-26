@@ -110,7 +110,7 @@ describe('Community v0.15 manifest and frozen native inventory', () => {
     const inventory = collectCurrentInventory(rootPath)
 
     expect(inventory).toMatchObject({
-      bundleRows: ['@yejiming/dsh-data-agent', '@yejiming/dsh-data-agent/routes'],
+      bundleRows: ['@grbr2010/dsh-data-agent', '@grbr2010/dsh-data-agent/routes'],
       commands: ['catalog', 'database'],
       tools: ['catalog-get', 'catalog-search', 'metric-get', 'render-analysis', 'sql-cmd', 'sql-query', 'sql-write', 'str_replace_editor'],
       services: ['dataAgentCatalog', 'dataAgentCatalogReview', 'dataAgentCatalogScanner', 'dataAgentConnections'],
@@ -262,10 +262,10 @@ describe('fixture negotiation and actual adapter coexistence', () => {
     const adapter = readJson('conformance/dsh-ecosystem/fixtures/profiles/native-plus-adapter/package.json')
     expect(native).toMatchObject({ private: true, fixture: true })
     expect(adapter).toMatchObject({ private: true, fixture: true })
-    expect(native.dependencies['@yejiming/dsh-data-agent']).toBe('file:../../../../..')
+    expect(native.dependencies['@grbr2010/dsh-data-agent']).toBe('file:../../../../..')
     expect(adapter.dependencies).toMatchObject({
       '@dsh-std/adapter-dsh': '0.1.0-rc3',
-      '@yejiming/dsh-data-agent': 'file:../../../../..',
+      '@grbr2010/dsh-data-agent': 'file:../../../../..',
     })
   })
 })

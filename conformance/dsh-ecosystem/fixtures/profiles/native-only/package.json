@@ -3,6 +3,6 @@
   "private": true,
   "fixture": true,
   "dependencies": {
-    "@yejiming/dsh-data-agent": "file:../../../../.."
+    "@grbr2010/dsh-data-agent": "file:../../../../.."
   }
 }

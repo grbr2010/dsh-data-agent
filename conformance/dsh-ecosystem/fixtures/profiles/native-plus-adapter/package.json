@@ -4,6 +4,6 @@
   "fixture": true,
   "dependencies": {
     "@dsh-std/adapter-dsh": "0.1.0-rc3",
-    "@yejiming/dsh-data-agent": "file:../../../../.."
+    "@grbr2010/dsh-data-agent": "file:../../../../.."
   }
 }

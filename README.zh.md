@@ -15,7 +15,7 @@
   &nbsp;
   <img src="https://img.shields.io/github/stars/omdsh-dev/dsh-data-agent?style=flat-square" alt="Stars">
   &nbsp;
-  <img src="https://img.shields.io/npm/v/@yejiming%2Fdsh-data-agent?style=flat-square&label=npm" alt="npm">
+  <img src="https://img.shields.io/badge/fork-grbr2010%2Fdsh--data--agent-blue?style=flat-square" alt="fork">
   &nbsp;
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License">
 </p>
@@ -61,10 +61,10 @@
 
 ```bash
 # 安装到 Web 界面（推荐）
-dsh plugin --profile web add @yejiming/dsh-data-agent
+dsh plugin --profile web add github:grbr2010/dsh-data-agent
 
 # 或安装到终端命令行（dsh-tui）
-dsh plugin --profile dsh-tui add @yejiming/dsh-data-agent
+dsh plugin --profile dsh-tui add github:grbr2010/dsh-data-agent
 ```
 
 ### 3. 开始分析

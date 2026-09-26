@@ -4,7 +4,7 @@
  * This entry owns only HTTP parsing/serialization. Connection validation,
  * credentials, persistence, metadata, query safety, and error semantics live
  * in `DataAgentConnections`, which is also consumed by TUI commands/tools.
- * @module @yejiming/dsh-data-agent/routes
+ * @module @grbr2010/dsh-data-agent/routes
  */
 
 import type { IncomingMessage, ServerResponse } from 'node:http'

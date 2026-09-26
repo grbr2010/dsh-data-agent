@@ -3,14 +3,14 @@
   "private": true,
   "dependencies": {
     "@deepseek-harness-tui/dsh-tui": "0.6.1",
-    "@yejiming/dsh-data-agent": "file:../../../.."
+    "@grbr2010/dsh-data-agent": "file:../../../.."
   },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-harness-tui/dsh-tui",
-        "@yejiming/dsh-data-agent"
+        "@grbr2010/dsh-data-agent"
       ]
     }
   }

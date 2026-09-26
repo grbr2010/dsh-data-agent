@@ -7,7 +7,7 @@
  * snapshots the host's `readable` listeners, consumes input for the lifetime
  * of the form, then restores the listeners exactly. It never imports dsh-tui,
  * React, or Ink.
- * @module @yejiming/dsh-data-agent/tui-connection-form
+ * @module @grbr2010/dsh-data-agent/tui-connection-form
  */
 import { type ConnectionFormDraft, type ConnectionFormInitial, type DatabaseConnectionInput } from './connections.ts';
 import { type DatabaseType } from './database-types.ts';

@@ -10,7 +10,7 @@
  * stay as strings because every client renders SQL values as text (NULL
  * rendering differs per client), and duplicate column names are made unique
  * so the row objects are valid lossless JSON maps.
- * @module @yejiming/dsh-data-agent/structured
+ * @module @grbr2010/dsh-data-agent/structured
  */
 
 import type { DatabaseType } from './connections.ts'

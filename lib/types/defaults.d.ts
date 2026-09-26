@@ -2,7 +2,7 @@
  * Package-wide defaults shared by the server half (`src/index.ts`) and the
  * database tool half (`src/tool.ts`). Loader schemas carry these as their
  * defaults so a deployment may override every one of them in cordis.yml.
- * @module @yejiming/dsh-data-agent/defaults
+ * @module @grbr2010/dsh-data-agent/defaults
  */
 /** Preset directory name installed into `$DSH_HOME/.agent-presets/`. */
 export declare const DEFAULT_PRESET_ID = "data-agent";

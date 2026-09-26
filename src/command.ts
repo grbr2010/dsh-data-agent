@@ -2,7 +2,7 @@
  * Agent-scoped `/database` human command. The preset mounts this entry below
  * the agent context, so the command registry scopes it to data-agent without
  * importing dsh-tui, React, or Ink.
- * @module @yejiming/dsh-data-agent/command
+ * @module @grbr2010/dsh-data-agent/command
  */
 
 import type { Context } from '@deepseek-ai/cordis'

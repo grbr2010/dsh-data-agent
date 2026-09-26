@@ -15,7 +15,7 @@
  * buttons; every chart carries an aria-label plus a plain-text summary; all
  * cell/label/axis values render as text (React escaping + ECharts richText),
  * so no report field can become executable DOM.
- * @module @yejiming/dsh-data-agent/client/AnalysisDashboard
+ * @module @grbr2010/dsh-data-agent/client/AnalysisDashboard
  */
 
 import { useEffect, useRef, useState } from 'react'

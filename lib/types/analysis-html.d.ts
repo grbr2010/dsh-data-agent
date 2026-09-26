@@ -4,7 +4,7 @@
  * The generated page has no network/runtime dependencies. Untrusted report
  * strings stay inside escaped JSON and are projected with textContent only;
  * chart geometry is derived from already-validated finite numeric fields.
- * @module @yejiming/dsh-data-agent/analysis-html
+ * @module @grbr2010/dsh-data-agent/analysis-html
  */
 import type { AnalysisReportV1 } from './analysis.ts';
 export declare const ANALYSIS_REPORT_DIRECTORY = "analysis-reports";

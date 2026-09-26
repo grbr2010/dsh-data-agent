@@ -9,7 +9,7 @@
  * non-HTML richText render mode, all labels/values stay text, and the series
  * palette is finite, colorblind-safe, and stable by series NAME (the same
  * series name gets the same color across every view of one report).
- * @module @yejiming/dsh-data-agent/client/analysis-charts
+ * @module @grbr2010/dsh-data-agent/client/analysis-charts
  */
 import type { EChartsCoreOption } from 'echarts/core';
 import { type AnalysisDatasetResultV1, type AnalysisViewV1 } from '../analysis.ts';

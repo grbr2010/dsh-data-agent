@@ -1,10 +1,10 @@
 {
   "inventoryVersion": "1",
-  "packageName": "@yejiming/dsh-data-agent",
+  "packageName": "@grbr2010/dsh-data-agent",
   "nativeRuntime": {
     "bundleRows": [
-      "@yejiming/dsh-data-agent",
-      "@yejiming/dsh-data-agent/routes"
+      "@grbr2010/dsh-data-agent",
+      "@grbr2010/dsh-data-agent/routes"
     ],
     "presetRows": [
       "@deepseek-ai/dsh-persona",

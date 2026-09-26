@@ -6,7 +6,7 @@
  * provider cannot resolve the configured/default bare command from its
  * current execution environment. No shell, registry, or recursive scan is
  * involved, and the exact discovery environment is returned for spawn.
- * @module @yejiming/dsh-data-agent/client-discovery
+ * @module @grbr2010/dsh-data-agent/client-discovery
  */
 
 import { readdir } from 'node:fs/promises'

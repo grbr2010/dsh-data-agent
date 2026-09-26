@@ -6,7 +6,7 @@
  * redaction, timeout/cancellation, non-zero-exit surfacing and structured
  * parsing share one code path. Existing sql-query behavior and messages stay
  * unchanged.
- * @module @yejiming/dsh-data-agent/structured-read
+ * @module @grbr2010/dsh-data-agent/structured-read
  */
 
 import type { Context } from '@deepseek-ai/cordis'

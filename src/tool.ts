@@ -1,5 +1,5 @@
 /**
- * The data-agent tool half (`@yejiming/dsh-data-agent/tool`): mounted ONLY by
+ * The data-agent tool half (`@grbr2010/dsh-data-agent/tool`): mounted ONLY by
  * the data-agent agent preset (`preset/data-agent/agent.cordis.yml`), never
  * by the host composition. It consumes the host's `subprocess` service and
  * the host-provided `dataAgentConnections` connection store, so it needs no
@@ -15,7 +15,7 @@
  * (`MYSQL_PWD` / `PGPASSWORD`), and the caller's signal plus an internal
  * deadline share one AbortController that drives the process-tree terminate
  * escalation. Output is bounded per stream and marked `truncated`.
- * @module @yejiming/dsh-data-agent/tool
+ * @module @grbr2010/dsh-data-agent/tool
  */
 
 import type { Context } from '@deepseek-ai/cordis'

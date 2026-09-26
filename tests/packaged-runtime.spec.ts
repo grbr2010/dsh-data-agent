@@ -17,22 +17,22 @@ it('cold-starts the packaged plugin on DSH 0.1.7-rc.1 and completes a real SQLit
     const profile = join(home, 'profiles', 'compatibility')
     const artifact = join(directory, 'artifact')
     const workspace = join(directory, 'workspace')
-    await Promise.all([mkdir(join(profile, 'node_modules', '@yejiming'), { recursive: true }), mkdir(artifact), mkdir(workspace)])
+    await Promise.all([mkdir(join(profile, 'node_modules', '@grbr2010'), { recursive: true }), mkdir(artifact), mkdir(workspace)])
     const { stdout } = await execute('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', directory, '--cache', join(directory, 'npm-cache')], { cwd: root })
     const [{ filename }] = JSON.parse(stdout) as { filename: string }[]
     const sourcePackage = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')) as { version: string }
-    expect(filename).toBe(`yejiming-dsh-data-agent-${sourcePackage.version}.tgz`)
+    expect(filename).toBe(`grbr2010-dsh-data-agent-${sourcePackage.version}.tgz`)
     await execute('tar', ['-xzf', join(directory, filename), '--strip-components=1', '-C', artifact])
     for (const manifest of ['package.json', 'dsh-plugin.json']) {
       expect(JSON.parse(await readFile(join(artifact, manifest), 'utf8')).version).toBe(sourcePackage.version)
     }
     expect(JSON.parse(await readFile(join(root, 'node_modules/@deepseek-ai/dsh/package.json'), 'utf8')).version).toBe('0.1.7-rc.1')
     await symlink(join(root, 'node_modules'), join(artifact, 'node_modules'), 'dir')
-    await symlink(artifact, join(profile, 'node_modules', '@yejiming', 'dsh-data-agent'), 'dir')
+    await symlink(artifact, join(profile, 'node_modules', '@grbr2010', 'dsh-data-agent'), 'dir')
     const database = join(workspace, 'fixture.sqlite')
     await execute('sqlite3', [database, 'CREATE TABLE sales(amount INTEGER); INSERT INTO sales VALUES (19), (23);'])
     const before = await readFile(database)
-    await writeFile(join(profile, 'package.json'), JSON.stringify({ name: 'data-agent-compatibility-fixture', private: true, type: 'module', dsh: { profile: { bundles: ['@deepseek-ai/dsh-base', '@yejiming/dsh-data-agent'] } } }))
+    await writeFile(join(profile, 'package.json'), JSON.stringify({ name: 'data-agent-compatibility-fixture', private: true, type: 'module', dsh: { profile: { bundles: ['@deepseek-ai/dsh-base', '@grbr2010/dsh-data-agent'] } } }))
     await writeFile(join(profile, 'cordis.patch.yml'), yaml.dump([
       { id: 'data-agent', config: { connections: { '*': { type: 'sqlite', database, readonly: true } } } },
       { id: 'session-title-llm', disabled: true },

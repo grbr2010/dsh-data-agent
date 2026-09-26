@@ -15,7 +15,7 @@
  * buttons; every chart carries an aria-label plus a plain-text summary; all
  * cell/label/axis values render as text (React escaping + ECharts richText),
  * so no report field can become executable DOM.
- * @module @yejiming/dsh-data-agent/client/AnalysisDashboard
+ * @module @grbr2010/dsh-data-agent/client/AnalysisDashboard
  */
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots';
 import type { ToolCallViewProps } from '@deepseek-ai/dsh-client-ui-tool/client';

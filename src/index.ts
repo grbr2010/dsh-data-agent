@@ -8,13 +8,13 @@
  * the current Cordis composition actually loads the dsh-tui plugin.
  *
  * The HTTP routes live in the separate `./routes` entry
- * (`@yejiming/dsh-data-agent/routes`, cordis row `data-agent-routes`) so
+ * (`@grbr2010/dsh-data-agent/routes`, cordis row `data-agent-routes`) so
  * this row keeps working in headless profiles without a webserver. The
  * database implementations still have public `./tool` and `./command`
  * exports. The preset registry loads them from absolute URLs beside this
  * artifact, so scoped activation never relies on resolving this package
  * again from a different host module root.
- * @module @yejiming/dsh-data-agent
+ * @module @grbr2010/dsh-data-agent
  */
 
 import { createHash } from 'node:crypto'
@@ -334,7 +334,7 @@ async function synchronizeExistingPreset(
 
 /** Exact profile-local package installation command used by diagnostics/docs. */
 export function profileInstallCommand(profile: string): string {
-  return `dsh plugin --profile ${profile} add @yejiming/dsh-data-agent`
+  return `dsh plugin --profile ${profile} add github:grbr2010/dsh-data-agent`
 }
 
 /** Actionable diagnostic for a roster-visible preset whose profile lacks this package. */
@@ -380,7 +380,7 @@ export async function registerPreset(
   // and resolve their entries to this artifact instead of registering twice.
   const rows = (plugins as PresetDefinition['plugins']).map(row => ({ ...row }))
   for (const [entry, entryConfig] of [['tool', config], ['command', undefined]] as const) {
-    const specifier = `@yejiming/dsh-data-agent/${entry}`
+    const specifier = `@grbr2010/dsh-data-agent/${entry}`
     const existing = rows.find(row => row.name === specifier)
     const name = new URL(`./${entry}.js`, import.meta.url).href
     if (existing !== undefined) existing.name = name

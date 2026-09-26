@@ -80,7 +80,7 @@ describe('data-agent preset installation and persona compatibility', () => {
 
   it('registers custom metadata and existing tool config once without rewriting user files', async () => {
     await installPreset(ctx, 'data-agent')
-    const custom = (await readFile(composition, 'utf8')) + '\n- id: custom-tools\n  name: "@yejiming/dsh-data-agent/tool"\n  config:\n    maxRows: 7\n'
+    const custom = (await readFile(composition, 'utf8')) + '\n- id: custom-tools\n  name: "@grbr2010/dsh-data-agent/tool"\n  config:\n    maxRows: 7\n'
     const metadata = 'name: Custom data mode\ndescription: Preserved description\norder: 5\n'
     await writeFile(composition, custom)
     await writeFile(join(directory, 'preset.yml'), metadata)

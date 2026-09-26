@@ -13,6 +13,6 @@
 # scoped entries use absolute artifact URLs to avoid package-resolution drift.
 - insert:
     - id: data-agent
-      name: '@yejiming/dsh-data-agent'
+      name: '@grbr2010/dsh-data-agent'
     - id: data-agent-routes
-      name: '@yejiming/dsh-data-agent/routes'
+      name: '@grbr2010/dsh-data-agent/routes'

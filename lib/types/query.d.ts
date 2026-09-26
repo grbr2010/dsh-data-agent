@@ -5,7 +5,7 @@
  * in their dedicated environment/stdin channel. ClickHouse uses the official
  * Node HTTP client with explicit transport/authentication fields. Both paths
  * share caller-owned cancellation, deadlines, and bounded captured output.
- * @module @yejiming/dsh-data-agent/query
+ * @module @grbr2010/dsh-data-agent/query
  */
 import type { Context } from '@deepseek-ai/cordis';
 import type { DatabaseConnection, DatabaseType } from './connections.ts';

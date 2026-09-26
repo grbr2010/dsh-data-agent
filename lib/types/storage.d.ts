@@ -6,7 +6,7 @@
  * fields. Runtime secrets stay in
  * {@link DataAgentConnectionService}; durable records only retain enough
  * information to rebuild a connection description in another DSH surface.
- * @module @yejiming/dsh-data-agent/storage
+ * @module @grbr2010/dsh-data-agent/storage
  */
 import { type Domain } from '@deepseek-ai/dsh-storage-domain';
 import { z } from 'zod';

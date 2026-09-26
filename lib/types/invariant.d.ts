@@ -1,6 +1,6 @@
 /**
- * Package-owned invariant companion for `@yejiming/dsh-data-agent`.
- * @module @yejiming/dsh-data-agent/invariant
+ * Package-owned invariant companion for `@grbr2010/dsh-data-agent`.
+ * @module @grbr2010/dsh-data-agent/invariant
  */
 import type { Context } from '@deepseek-ai/cordis';
 /** Cordis companion plugin name. */

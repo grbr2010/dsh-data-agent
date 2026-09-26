@@ -8,13 +8,13 @@
  * the current Cordis composition actually loads the dsh-tui plugin.
  *
  * The HTTP routes live in the separate `./routes` entry
- * (`@yejiming/dsh-data-agent/routes`, cordis row `data-agent-routes`) so
+ * (`@grbr2010/dsh-data-agent/routes`, cordis row `data-agent-routes`) so
  * this row keeps working in headless profiles without a webserver. The
  * database implementations still have public `./tool` and `./command`
  * exports. The preset registry loads them from absolute URLs beside this
  * artifact, so scoped activation never relies on resolving this package
  * again from a different host module root.
- * @module @yejiming/dsh-data-agent
+ * @module @grbr2010/dsh-data-agent
  */
 import type { Context } from '@deepseek-ai/cordis';
 /** The `dataAgentConnections` service face on the cordis context. */

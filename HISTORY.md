@@ -46,8 +46,34 @@
   [`README.zh.md`](README.zh.md), английская — [`README.en.md`](README.en.md);
   языковое меню обновлено во всех трёх файлах.
 
+## 2026-09-26 (позже) — Переименование пакета: `@grbr2010/dsh-data-agent`
+
+Пакет переименован с `@yejiming/dsh-data-agent` на **`@grbr2010/dsh-data-agent`**,
+чтобы форк отличался от upstream в списке плагинов DSH (GUI показывает имя
+пакета). Отображаемое имя — «DSH Data Agent (fork)».
+
+Что НЕ менялось (поэтому настройки, подключения и каталог пережили
+переименование без какого-либо переноса):
+
+- `id` плагина в `dsh-plugin.json` — `io.github.omdsh-dev.dsh-data-agent`;
+- loader-ид `data-agent` / `data-agent-routes` в `cordis.patch.yml` (ключи
+  конфиг-патчей и пресета);
+- имена доменов хранилищ `data_agent_connections` / `data_agent_catalog`;
+- версия и peer-зависимости.
+
+Что поменялось:
+
+- `package.json`: `name` → `@grbr2010/dsh-data-agent` (версия 0.2.0 сохранена);
+- `cordis.patch.yml`: поля `name` строк insert → новый пакет;
+- `src/index.ts`: подсказка установки — `dsh plugin add github:grbr2010/dsh-data-agent`
+  (новое имя не публикуется в npm, установка только с GitHub);
+- `dsh-plugin.json`: отображаемое имя «DSH Data Agent (fork)»;
+- тесты и фикстуры (`tests/`, `conformance/`) — на новое имя пакета;
+- README ×3: команды установки — github-спек, npm-бейдж → бейдж форка.
+
 ## Планы
 
-- Перевести сборку образа DSH на этот форк (`github:grbr2010/dsh-data-agent`),
-  удалить `patch-data-agent-oracle.mjs` из Dockerfile.
+- ~~Перевести сборку образа DSH на этот форк, удалить `patch-data-agent-oracle.mjs`
+  из Dockerfile.~~ Выполнено 2026-09-26: образ переведён на форк через PVC-оверлей
+  `plugins.base.json` (deploy-репозиторий dsh), патч-скрипт больше не подключён.
 - Предложить фиксы 1–5 upstream отдельным PR с корректным описанием.

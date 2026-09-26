@@ -41,8 +41,8 @@ describe('Web/TUI package and preset composition', () => {
   it('keeps the preset composition on built-in rows and preloads package capabilities from the profile entry', () => {
     const preset = readFileSync(new URL('preset/data-agent/agent.cordis.yml', root), 'utf8')
     expect(preset.match(/^- id:/gm)).toHaveLength(2)
-    expect(preset).not.toContain("name: '@yejiming/dsh-data-agent/tool'")
-    expect(preset).not.toContain("name: '@yejiming/dsh-data-agent/command'")
+    expect(preset).not.toContain("name: '@grbr2010/dsh-data-agent/tool'")
+    expect(preset).not.toContain("name: '@grbr2010/dsh-data-agent/command'")
     const profileEntry = readFileSync(new URL('src/index.ts', root), 'utf8')
     expect(profileEntry).toContain('ctx.agentPresets.register(')
     expect(profileEntry).not.toContain('standingKeyFor')
@@ -85,7 +85,7 @@ describe('Web/TUI package and preset composition', () => {
     const message = missingProfileDependencyMessage('dsh-tui')
     expect(message).toContain('profile "dsh-tui"')
     expect(message).toContain('profile-preloaded capabilities')
-    expect(message).toContain('dsh plugin --profile dsh-tui add @yejiming/dsh-data-agent')
+    expect(message).toContain('dsh plugin --profile dsh-tui add github:grbr2010/dsh-data-agent')
   })
 
   it('models separate Web/TUI installs and the missing-package ghost preset case', () => {
@@ -94,12 +94,12 @@ describe('Web/TUI package and preset composition', () => {
     )) as Record<string, any>
     for (const profile of ['web', 'dsh-tui']) {
       const fixture = readFixture(profile)
-      expect(fixture.dependencies['@yejiming/dsh-data-agent']).toBe('file:../../../..')
-      expect(fixture.dsh.profile.bundles).toContain('@yejiming/dsh-data-agent')
+      expect(fixture.dependencies['@grbr2010/dsh-data-agent']).toBe('file:../../../..')
+      expect(fixture.dsh.profile.bundles).toContain('@grbr2010/dsh-data-agent')
     }
     const missing = readFixture('missing')
-    expect(missing.dependencies['@yejiming/dsh-data-agent']).toBeUndefined()
-    expect(missing.dsh.profile.bundles).not.toContain('@yejiming/dsh-data-agent')
+    expect(missing.dependencies['@grbr2010/dsh-data-agent']).toBeUndefined()
+    expect(missing.dsh.profile.bundles).not.toContain('@grbr2010/dsh-data-agent')
   })
 
   it('rejects real passwords in config-seeded connections', () => {

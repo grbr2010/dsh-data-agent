@@ -2,7 +2,7 @@
   "$schema": "https://dsh.community/schemas/dsh-plugin-0.15.json",
   "manifestVersion": "0.15",
   "id": "io.github.omdsh-dev.dsh-data-agent",
-  "name": "DSH Data Agent",
+  "name": "DSH Data Agent (fork)",
   "version": "0.2.0",
   "facets": {
     "host": {

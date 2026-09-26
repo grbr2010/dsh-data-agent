@@ -7,7 +7,7 @@
  * Security note: the password is persisted in PLAIN TEXT by explicit user
  * decision (local single-user scenario) — see README 安全说明. The storage
  * key is versioned so a future shape change can migrate or ignore old data.
- * @module @yejiming/dsh-data-agent/persistence
+ * @module @grbr2010/dsh-data-agent/persistence
  */
 
 import { isDatabaseType, type DatabaseType } from '../database-types.ts'

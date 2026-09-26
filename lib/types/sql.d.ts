@@ -8,7 +8,7 @@
  * - a single tool call carries at most ONE SQL statement;
  * - `maxRows` can be enforced with a real dialect-level row bound, not just a prompt.
  *
- * @module @yejiming/dsh-data-agent/sql
+ * @module @grbr2010/dsh-data-agent/sql
  */
 /**
  * Throw unless `sql` contains at most one statement. A single trailing

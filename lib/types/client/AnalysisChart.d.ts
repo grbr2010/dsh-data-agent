@@ -3,7 +3,7 @@
  * resizes it through a ResizeObserver, disposes it on unmount, and exposes an
  * accessible image role + short text summary. Options arrive pre-built by
  * chartOptionFor (token theme, non-HTML tooltips, reduced-motion included).
- * @module @yejiming/dsh-data-agent/client/AnalysisChart
+ * @module @grbr2010/dsh-data-agent/client/AnalysisChart
  */
 import type { EChartsCoreOption } from 'echarts/core';
 /** Chart container props. */

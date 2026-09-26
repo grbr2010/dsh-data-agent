@@ -9,7 +9,7 @@
  * dataset references, count violations and every disallowed view shape, so a
  * model can never smuggle arbitrary chart-library options, HTML, CSS or URLs
  * through the wire contract.
- * @module @yejiming/dsh-data-agent/analysis
+ * @module @grbr2010/dsh-data-agent/analysis
  */
 
 import type { ParameterSchemaSpec, ValueSchemaSpec } from '@deepseek-ai/dsh-tools'

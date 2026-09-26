@@ -5,7 +5,7 @@
  * Runtime records may contain one temporary Web password. Durable records
  * never do: they contain a non-secret profile plus an optional credential
  * reference that is resolved again at the start of every database operation.
- * @module @yejiming/dsh-data-agent/connections
+ * @module @grbr2010/dsh-data-agent/connections
  */
 import type { Context } from '@deepseek-ai/cordis';
 import { type ClientConfig, type ColumnInfo } from './clients.ts';

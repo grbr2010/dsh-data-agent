@@ -2,7 +2,7 @@
  * Surface-neutral Catalog contracts. This module contains no Node or browser
  * runtime dependencies beyond Zod and can therefore be imported type-only by
  * the Web bundle.
- * @module @yejiming/dsh-data-agent/catalog-types
+ * @module @grbr2010/dsh-data-agent/catalog-types
  */
 import { z } from 'zod';
 export declare const catalogDateTimeSchema: z.ZodISODateTime;
