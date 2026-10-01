@@ -1,8 +1,18 @@
 # HISTORY — доработки форка
 
 Форк [`grbr2010/dsh-data-agent`](https://github.com/grbr2010/dsh-data-agent) от
-[`omdsh-dev/dsh-data-agent`](https://github.com/omdsh-dev/dsh-data-agent) **v0.2.0**
-(upstream-коммит `3016f67`, 2026-09-24). Ниже — все отличия от upstream и их причины.
+[`omdsh-dev/dsh-data-agent`](https://github.com/omdsh-dev/dsh-data-agent) **v0.2.2**
+(upstream-коммит `6a649fe`, 2026-09-29; форкнут с `3016f67`, 2026-09-24).
+Ниже — все отличия от upstream и их причины.
+
+## 2026-10-01 — Синхронизация с upstream v0.2.1–v0.2.2
+
+Merge upstream `9f052d9` (v0.2.1: адаптация DSH 0.2.0-rc.1, фикс «застрявшего»
+статуса плагина) и `6a649fe` (v0.2.2: адаптация DSH 0.2.0-rc.2, ослабление
+ограничений версий до `>=0.2.0-rc.1`). Конфликты (`README.md`, `dsh-plugin.json`,
+`lib/client.js`) разрешены: сохранены русские README и имя форка, версия
+поднята до 0.2.2, `lib/` пересобран из смерженных исходников
+(`pnpm install && pnpm build`), тесты — 446 passed / 3 skipped.
 
 ## 2026-09-26 — Oracle-фиксы и настраиваемый язык обогащения
 
