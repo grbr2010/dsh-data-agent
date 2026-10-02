@@ -3,7 +3,7 @@
   "manifestVersion": "0.15",
   "id": "io.github.omdsh-dev.dsh-data-agent",
   "name": "DSH Data Agent (fork)",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "facets": {
     "host": {
       "entry": "lib/ecosystem.js",
