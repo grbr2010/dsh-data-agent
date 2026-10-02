@@ -113,6 +113,22 @@ describe('Catalog AI result validation', () => {
       .toThrow(/unknown field asset/)
   })
 
+  it('tolerates redundant keys in the model answer instead of failing the whole table', () => {
+    // Observed with mws-glm-5-3 and deepseek-flash: both add a redundant `name`
+    // to every field although the prompt forbids extra keys. Such an answer is
+    // still usable — unknown keys are dropped, only assetId/meaning survive.
+    const withExtraKeys = '{"table":{"assetId":"asset_orders","meaning":"订单业务记录","name":"ORDERS"},'
+      + '"fields":[{"assetId":"asset_order_id","meaning":"订单唯一标识","name":"ORDER_ID","comment":"备注"},'
+      + '{"assetId":"asset_amount","meaning":"订单金额","name":"AMOUNT"}]}'
+    expect(validateModelResult(withExtraKeys, input)).toEqual({
+      table: { assetId: 'asset_orders', meaning: '订单业务记录' },
+      fields: [
+        { assetId: 'asset_order_id', meaning: '订单唯一标识' },
+        { assetId: 'asset_amount', meaning: '订单金额' },
+      ],
+    })
+  })
+
   it('selects the system prompt per enrichment language, with zh as the default', async () => {
     const modelResult = JSON.stringify({
       table: { assetId: 'asset_orders', meaning: 'x' },
@@ -157,6 +173,16 @@ describe('Catalog AI result validation', () => {
     await createDshCatalogMeaningGenerator(agents as never, makeLlm(en) as never, 'en').generate(selection, input, signal)
     expect(en[0]!.system).toContain('written in English')
     expect(en[0]!.system).not.toContain('русский язык')
+
+    // Every prompt spells out the allowed keys: models kept adding `name` to
+    // field objects despite the earlier generic "no extra fields" wording.
+    for (const prompt of [zhDefault[0]!.system, ru[0]!.system, en[0]!.system]) {
+      expect(prompt).toContain('"assetId"')
+      expect(prompt).toContain('"meaning"')
+    }
+    expect(ru[0]!.system).toContain('never add "name", "column", "comment", "type"')
+    expect(en[0]!.system).toContain('never add "name", "column", "comment", "type"')
+    expect(zhDefault[0]!.system).toContain('不得添加"name"、"column"、"comment"、"type"等任何其他键')
 
     // All three are distinct prompts.
     expect(new Set([zhDefault[0]!.system, ru[0]!.system, en[0]!.system]).size).toBe(3)

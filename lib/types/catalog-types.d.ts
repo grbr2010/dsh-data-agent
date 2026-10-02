@@ -111,6 +111,13 @@ export declare const catalogProgressSchema: z.ZodObject<{
     assets: z.ZodNumber;
 }, z.core.$strict>;
 export type CatalogProgress = z.infer<typeof catalogProgressSchema>;
+/**
+ * Durable bound for the free-form `error` fields of a run and its enrichment
+ * step. Producers must truncate their summaries to this length (see
+ * `catalogEnrichmentErrorSummary`): a longer value fails schema validation, and
+ * a validation failure while persisting progress aborts the whole run.
+ */
+export declare const CATALOG_RUN_ERROR_MAX_CHARS = 4096;
 export declare const catalogEnrichmentSchema: z.ZodObject<{
     status: z.ZodEnum<{
         running: "running";

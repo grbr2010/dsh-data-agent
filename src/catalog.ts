@@ -14,6 +14,7 @@ import {
   stableJson,
 } from './catalog-identity.ts'
 import {
+  CATALOG_RUN_ERROR_MAX_CHARS,
   catalogScopeSchema,
   catalogSearchRequestSchema,
   catalogObservationSchema,
@@ -687,23 +688,25 @@ export async function createCatalogService(
           errors.push(message)
           options.logger?.warn('data-agent Catalog AI enrichment failed for %s: %s', table.payload.path, message)
         }
+        const errorSummary = catalogEnrichmentErrorSummary(errors)
         run = await setRun(run, {
           enrichment: {
             ...run.enrichment!,
             tablesCompleted: completed,
             tablesFailed: failed,
             candidatesGenerated: generated,
-            ...errors.length > 0 ? { error: errors.slice(-3).join(' | ') } : {},
+            ...errorSummary === undefined ? {} : { error: errorSummary },
           },
         })
       }
       const status: CatalogEnrichment['status'] = failed === 0 ? 'succeeded' : completed === 0 ? 'failed' : 'partial'
+      const errorSummary = catalogEnrichmentErrorSummary(errors)
       return setRun(run, {
         enrichment: {
           ...run.enrichment!,
           status,
           completedAt: now(),
-          ...errors.length > 0 ? { error: errors.slice(-3).join(' | ') } : {},
+          ...errorSummary === undefined ? {} : { error: errorSummary },
         },
       })
     } catch (error) {
@@ -765,6 +768,22 @@ export async function createCatalogService(
       redactSecretText(`${prefix}${raw}`, [connection.password]),
       options.maxTextChars,
     ).value
+  }
+
+  /**
+   * Summary kept in `run.enrichment.error`. The durable schema caps that field
+   * at 4_096 characters, while three normalized messages can be longer: a
+   * ZodError listing every field of a wide table, or a verbose 429 from the LLM
+   * proxy. Without the cap `putRun` fails validation, the exception escapes the
+   * per-table try/catch and the whole enrichment run dies as `partial` after a
+   * handful of failures.
+   */
+  function catalogEnrichmentErrorSummary(errors: string[]): string | undefined {
+    if (errors.length === 0) return undefined
+    const joined = errors.slice(-3).join(' | ')
+    return joined.length <= CATALOG_RUN_ERROR_MAX_CHARS
+      ? joined
+      : `${joined.slice(0, CATALOG_RUN_ERROR_MAX_CHARS - 1)}…`
   }
 
   function validateAdapterResult(result: CatalogAdapterResult, run: CatalogRun): void {

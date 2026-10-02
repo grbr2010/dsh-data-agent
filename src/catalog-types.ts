@@ -78,6 +78,14 @@ export const catalogProgressSchema = z.strictObject({
 })
 export type CatalogProgress = z.infer<typeof catalogProgressSchema>
 
+/**
+ * Durable bound for the free-form `error` fields of a run and its enrichment
+ * step. Producers must truncate their summaries to this length (see
+ * `catalogEnrichmentErrorSummary`): a longer value fails schema validation, and
+ * a validation failure while persisting progress aborts the whole run.
+ */
+export const CATALOG_RUN_ERROR_MAX_CHARS = 4_096
+
 export const catalogEnrichmentSchema = z.strictObject({
   status: catalogEnrichmentStatusSchema,
   provider: z.string().min(1).max(256),
@@ -89,7 +97,7 @@ export const catalogEnrichmentSchema = z.strictObject({
   candidatesGenerated: z.number().int().nonnegative(),
   startedAt: catalogDateTimeSchema.optional(),
   completedAt: catalogDateTimeSchema.optional(),
-  error: z.string().max(4_096).optional(),
+  error: z.string().max(CATALOG_RUN_ERROR_MAX_CHARS).optional(),
 })
 export type CatalogEnrichment = z.infer<typeof catalogEnrichmentSchema>
 
@@ -104,7 +112,7 @@ export const catalogRunSchema = z.strictObject({
   createdAt: catalogDateTimeSchema,
   startedAt: catalogDateTimeSchema.optional(),
   completedAt: catalogDateTimeSchema.optional(),
-  error: z.string().max(4_096).optional(),
+  error: z.string().max(CATALOG_RUN_ERROR_MAX_CHARS).optional(),
   enrichment: catalogEnrichmentSchema.optional(),
 })
 export type CatalogRun = z.infer<typeof catalogRunSchema>

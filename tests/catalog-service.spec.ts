@@ -230,6 +230,45 @@ describe('Catalog shared service', () => {
     ))
     expect(visibleTables.sort()).toEqual(['orders', 'users'])
   })
+
+  it('caps the persisted enrichment error summary so verbose failures cannot abort the run', async () => {
+    // Regression: three long messages (a ZodError listing every field, or a
+    // verbose 429 from the LLM proxy) used to overflow the 4_096-character
+    // `enrichment.error` schema bound. `putRun` then threw, the exception
+    // escaped the per-table try/catch and the whole run died as `partial`
+    // after only a handful of failures.
+    const longMessage = 'x'.repeat(3_000)
+    const adapter: CatalogAdapter = {
+      type: 'sqlite', capabilities: {},
+      async scan(context) {
+        return {
+          observations: ['orders', 'users', 'items', 'stock']
+            .map(name => tableObservation(context, name)),
+          relations: [], coverageComplete: true, unavailableScopes: [],
+        }
+      },
+    }
+    const persistence = createMemoryCatalogPersistence()
+    const service = await createCatalogService(connectionFixture(), persistence, {
+      maxAssetsPerRun: 100, maxTextChars: 4_096, pageSize: 20, maxPageSize: 100,
+      schemaConcurrency: 1, assetConcurrency: 1, adapters: { sqlite: adapter }, randomId: () => 'verbose-ai',
+      meaningGenerator: {
+        capture: () => ({ provider: 'fixture-provider', model: 'fixture-model' }),
+        async generate(_selection, input) {
+          if (input.name === 'orders') return { table: { assetId: input.assetId, meaning: '订单记录' }, fields: [] }
+          throw new Error(longMessage)
+        },
+      },
+    })
+    await service.scanner.start({ sessionId: 's', scope: { kind: 'source' } })
+    const run = await waitForEnrichment(service, 'profile-fixture')
+    expect(run).toMatchObject({ status: 'succeeded', enrichment: {
+      status: 'partial', tablesTotal: 4, tablesCompleted: 1, tablesFailed: 3, candidatesGenerated: 1,
+    } })
+    // The run survived and the stored summary respects the durable bound.
+    expect(run.enrichment?.error?.length).toBe(4_096)
+    expect(run.enrichment?.error?.endsWith('…')).toBe(true)
+  })
   it('publishes view columns whose metadata rows arrive before their parent relation', async () => {
     const connection = {
       type: 'mysql' as const,

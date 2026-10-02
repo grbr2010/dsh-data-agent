@@ -61,12 +61,20 @@ export interface CatalogMeaningGenerator {
   ): Promise<CatalogMeaningModelResult>
 }
 
-const modelResultSchema = z.strictObject({
-  table: z.strictObject({
+/**
+ * Shape of the model's business-meaning answer. Deliberately NOT strict: models
+ * (observed with mws-glm-5-3 and deepseek-flash) tend to add a redundant `name`
+ * key to field objects even though the prompt forbids extra keys, and a strict
+ * schema rejected the whole table for it. Unknown keys are stripped instead;
+ * the meaningful checks (known, unique and complete assetIds) stay in
+ * `validateModelResult` below.
+ */
+const modelResultSchema = z.object({
+  table: z.object({
     assetId: z.string().min(1).max(256),
     meaning: z.string().trim().min(1).max(4_096),
   }),
-  fields: z.array(z.strictObject({
+  fields: z.array(z.object({
     assetId: z.string().min(1).max(256),
     meaning: z.string().trim().min(1).max(4_096),
   })).max(512),
@@ -229,6 +237,7 @@ Rules:
 3. Every input field must be returned exactly once, with assetId copied verbatim; never add unknown assetIds.
 4. Output no Markdown, explanations, confidence scores, SQL, or extra fields — only this strict JSON:
 {"table":{"assetId":"...","meaning":"..."},"fields":[{"assetId":"...","meaning":"..."}]}
+   Each object inside "fields" must contain exactly the two keys "assetId" and "meaning" — never add "name", "column", "comment", "type" or any other key. The top level must contain exactly the two keys "table" and "fields". Copy every assetId verbatim from the input.
 5. Everything is a candidate pending human confirmation; never use wording such as ${forbiddenWording}.`
 }
 
@@ -241,6 +250,7 @@ const CATALOG_MEANING_SYSTEM_PROMPTS: Record<CatalogMeaningLanguage, string> = {
 3. 每个输入字段必须且只能返回一次，assetId必须原样复制；不得添加未知assetId。
 4. 不要输出Markdown、解释、置信度、SQL或额外字段，只输出以下严格JSON：
 {"table":{"assetId":"...","meaning":"..."},"fields":[{"assetId":"...","meaning":"..."}]}
+   fields数组中的每个对象只能包含"assetId"和"meaning"两个键，不得添加"name"、"column"、"comment"、"type"等任何其他键；顶层只能包含"table"和"fields"两个键。assetId必须原样复制。
 5. 所有内容都是待人工确认的候选，不要使用“已经确认”“官方口径”等表述。`,
   ru: englishCatalogMeaningPrompt(
     'Russian (русский язык)',
